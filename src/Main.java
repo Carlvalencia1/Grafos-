@@ -1,6 +1,7 @@
 import java.util.List;
 import java.util.Scanner;
 import models.*;
+import java.util.Stack;
 
 public class Main {
     public static void main(String[] args) {
@@ -14,7 +15,8 @@ public class Main {
                 System.out.println("Menu");
                 System.out.println("1) Hacer grafo");
                 System.out.println("2) Imprimir grafo");
-                System.out.println("3) Salir");
+                System.out.println("3) Imprimir recorrido de profundidad");
+                System.out.println("4) Salir");
                 System.out.print("Indique la opción que desee elegir: ");
                 opcion = entrada.nextInt();
 
@@ -40,6 +42,9 @@ public class Main {
                         System.out.println(grafo);
                         break;
                     case 3:
+                        grafo.imprimirRecorrido();
+                        break;
+                    case 4:
                         System.out.println("Saliendo del programa.");
                         break;
                     default:
@@ -50,7 +55,7 @@ public class Main {
                 entrada.next();
                 opcion = 0;
             }
-        } while (opcion != 3);
+        } while (opcion != 4);
     }
 
     public static Vertice crearVertice(Grafo grafo, Scanner entrada) {
@@ -88,4 +93,6 @@ public class Main {
 
         return nuevoVertice;
     }
+
+
 }

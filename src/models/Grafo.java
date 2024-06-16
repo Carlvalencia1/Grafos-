@@ -88,6 +88,38 @@ public class Grafo {
         return false;
     }
 
+    public void imprimirRecorrido() {
+        if(listaVertices.size() == 0) {
+            System.out.println("Aún no hay vertices");
+        }else {
+            Stack<Vertice> pila = new Stack<>();
+            ArrayList<Integer> verticesRecorridos = new ArrayList<>();
+
+            pila.push(listaVertices.get(0));
+
+            while(!pila.isEmpty()) {
+                Vertice N = pila.pop();
+                verticesRecorridos.add(N.getDato());
+
+                List<Arista> vecinos = N.getAristas();
+
+                if (vecinos != null) {
+                    for (int i = 0; i < vecinos.size(); i++) {
+                        pila.push(vecinos.get(i).getFin());
+                    }
+                }
+
+            }
+
+            String recorrido = "Recorrido de profundidad: ";
+            for (int i = 0; i < verticesRecorridos.size(); i++) {
+                recorrido += String.valueOf(verticesRecorridos.get(i));
+                recorrido += ", ";
+            }
+            System.out.println(recorrido);
+        }
+    }
+
     @Override
     public String toString() {
         return "Grafo [" + getVertices() + "\n";
