@@ -22,31 +22,46 @@ public class Grafo {
         boolean pesoValido = false;
 
         do {
-
             for (int i = 0; i < listaVertices.size(); i++) {
                 System.out.println((i + 1) + " )" + listaVertices.get(i).getDato());
             }
 
-            try {
-                System.out.println("Seleccione el número del vértice origen: ");
-                opcionOrigen = entrada.nextInt();
-                System.out.println("Indique el número del vértice destino: ");
-                opcionDestino = entrada.nextInt();
-
-                if (opcionOrigen == opcionDestino) {
-                    System.out.println("Los vertices deben ser distintos");
-                    continue;
-                }else if (opcionOrigen > listaVertices.size() || opcionDestino > listaVertices.size()){
-                    System.out.println("El numero que ingrese debe ser de una de las opciones: del 1 al " + listaVertices.size());
-                    continue;
-                }else {
-                    origen = listaVertices.get(opcionOrigen - 1);
-                    destino = listaVertices.get(opcionDestino - 1);
+            while (true) {
+                try {
+                    System.out.println("Seleccione el número del vértice origen: ");
+                    opcionOrigen = entrada.nextInt();
+                    if (opcionOrigen <= 0 || opcionOrigen > listaVertices.size()) {
+                        System.out.println("Error: Ingrese un número válido del 1 al " + listaVertices.size());
+                    } else {
+                        break;
+                    }
+                } catch (Exception e) {
+                    System.out.println("Error: Ingrese datos numéricos");
+                    entrada.next(); // Clear invalid input
                 }
+            }
 
-            } catch (NumberFormatException | IndexOutOfBoundsException e) {
-                System.out.println("Error: Ingrese un número válido.");
+            while (true) {
+                try {
+                    System.out.println("Indique el número del vértice destino: ");
+                    opcionDestino = entrada.nextInt();
+                    if (opcionDestino <= 0 || opcionDestino > listaVertices.size()) {
+                        System.out.println("Error: Ingrese un número válido del 1 al " + listaVertices.size());
+                    } else {
+                        break;
+                    }
+                } catch (Exception e) {
+                    System.out.println("Error: Ingrese datos numéricos");
+                    entrada.next(); // Clear invalid input
+                }
+            }
+
+            if (opcionOrigen == opcionDestino) {
+                System.out.println("Los vértices deben ser distintos");
                 continue;
+            } else {
+                origen = listaVertices.get(opcionOrigen - 1);
+                destino = listaVertices.get(opcionDestino - 1);
             }
 
             if (existeArista(origen, destino)) {
@@ -56,28 +71,28 @@ public class Grafo {
 
             do {
                 pesoValido = false;
-                try{
+                try {
                     System.out.println("Indique el peso ");
                     peso = entrada.nextInt();
-
                     if (peso <= 0) {
                         System.out.println("Introduzca un peso positivo.");
                         pesoValido = false;
-                    }else {
+                    } else {
                         pesoValido = true;
                     }
-                }catch (Exception e){
+                } catch (Exception e) {
                     System.out.println("Error: Ingrese datos numéricos");
-                    entrada.next();
+                    entrada.next(); // Clear invalid input
                 }
-            } while (pesoValido == false);
+            } while (!pesoValido);
 
             origen.setAristas(new Arista(origen, destino, peso));
-            System.out.println("Agregar mas aristas: 1)Si\t2)No");
+            System.out.println("Agregar más aristas: 1)Sí\t2)No");
             opcion = entrada.nextInt();
 
         } while (opcion == 1);
     }
+
 
     private boolean existeArista(Vertice origen, Vertice destino) {
         for (Arista arista : origen.getAristas()) {
