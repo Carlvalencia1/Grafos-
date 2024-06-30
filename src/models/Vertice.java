@@ -4,7 +4,7 @@ import java.util.*;
 
 public class Vertice {
     private int dato;
-    private int stock; // Añadido para el stock del artículo
+    private int stock;
     private List<Arista> listaAristas;
 
     public Vertice(int valor, int stock) {
