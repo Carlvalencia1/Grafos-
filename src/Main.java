@@ -68,7 +68,7 @@ public class Main {
                     case 5:
                         try {
                             System.out.println("Indica el vértice que requiere el artículo (comenzando desde 1):");
-                            int centro = entrada.nextInt() - 1; // Restar 1 para ajustar al índice del array
+                            int centro = entrada.nextInt() - 1;
                             if (centro >= 0 && centro < grafo.getNumeroVertices()) {
                                 Vertice centroCercano = grafo.centroMasCercanoConStock(centro);
                                 if (centroCercano != null) {
