@@ -1,7 +1,9 @@
 package models;
+
 import java.util.*;
 
 public class Grafo {
+    static final int INFINITO = Integer.MAX_VALUE;
     private List<Vertice> listaVertices = new ArrayList<>();
 
     public void agregarNodo(Vertice verticeNuevo) {
@@ -10,6 +12,27 @@ public class Grafo {
 
     public List<Vertice> getVertices() {
         return listaVertices;
+    }
+
+    public int getNumeroVertices() {
+        return listaVertices.size();
+    }
+
+    public int[][] getMatrizAdyacencia() {
+        int n = listaVertices.size();
+        int[][] matrizAdyacencia = new int[n][n];
+        for (int i = 0; i < n; i++) {
+            for (int j = 0; j < n; j++) {
+                matrizAdyacencia[i][j] = INFINITO;
+            }
+        }
+        for (int i = 0; i < n; i++) {
+            for (Arista arista : listaVertices.get(i).getAristas()) {
+                int destino = listaVertices.indexOf(arista.getFin());
+                matrizAdyacencia[i][destino] = arista.getPeso();
+            }
+        }
+        return matrizAdyacencia;
     }
 
     public void agregarAristas() {
@@ -37,7 +60,7 @@ public class Grafo {
                     }
                 } catch (Exception e) {
                     System.out.println("Error: Ingrese datos numéricos");
-                    entrada.next(); // Clear invalid input
+                    entrada.next();
                 }
             }
 
@@ -52,12 +75,12 @@ public class Grafo {
                     }
                 } catch (Exception e) {
                     System.out.println("Error: Ingrese datos numéricos");
-                    entrada.next(); // Clear invalid input
+                    entrada.next();
                 }
             }
 
             if (opcionOrigen == opcionDestino) {
-                System.out.println("Los vértices deben ser distintos");
+                System.out.println("No acepta lazos");
                 continue;
             } else {
                 origen = listaVertices.get(opcionOrigen - 1);
@@ -82,7 +105,7 @@ public class Grafo {
                     }
                 } catch (Exception e) {
                     System.out.println("Error: Ingrese datos numéricos");
-                    entrada.next(); // Clear invalid input
+                    entrada.next();
                 }
             } while (!pesoValido);
 
@@ -92,7 +115,6 @@ public class Grafo {
 
         } while (opcion == 1);
     }
-
 
     private boolean existeArista(Vertice origen, Vertice destino) {
         for (Arista arista : origen.getAristas()) {
@@ -104,39 +126,65 @@ public class Grafo {
     }
 
     public void imprimirRecorrido() {
-        if(listaVertices.size() == 0) {
+        if (listaVertices.size() == 0) {
             System.out.println("Aún no hay vertices");
-        }else {
+        } else {
+            Set<Vertice> visitados = new HashSet<>();
             Stack<Vertice> pila = new Stack<>();
             ArrayList<Integer> verticesRecorridos = new ArrayList<>();
 
             pila.push(listaVertices.get(0));
 
-            while(!pila.isEmpty()) {
+            while (!pila.isEmpty()) {
                 Vertice N = pila.pop();
-                verticesRecorridos.add(N.getDato());
+                if (!visitados.contains(N)) {
+                    verticesRecorridos.add(N.getDato());
+                    visitados.add(N);
 
-                List<Arista> vecinos = N.getAristas();
+                    List<Arista> vecinos = N.getAristas();
 
-                if (vecinos != null) {
-                    for (int i = 0; i < vecinos.size(); i++) {
-                        pila.push(vecinos.get(i).getFin());
+                    if (vecinos != null) {
+                        for (Arista arista : vecinos) {
+                            Vertice vecino = arista.getFin();
+                            if (!visitados.contains(vecino)) {
+                                pila.push(vecino);
+                            }
+                        }
                     }
                 }
-
             }
 
             String recorrido = "Recorrido de profundidad: ";
             for (int i = 0; i < verticesRecorridos.size(); i++) {
                 recorrido += String.valueOf(verticesRecorridos.get(i));
-                recorrido += ", ";
+                if (i < verticesRecorridos.size() - 1) {
+                    recorrido += ", ";
+                }
             }
             System.out.println(recorrido);
         }
     }
 
+    public Vertice buscarCentroMasCercanoConStock(CaminoMinimo caminoMinimo, int origen) {
+        int[] distancias = caminoMinimo.getDistancias();
+        Vertice centroMasCercano = null;
+        int distanciaMinima = INFINITO;
+
+        for (Vertice vertice : listaVertices) {
+            if (vertice.getDato() != origen && vertice.getStock() > 0) {
+                int distancia = distancias[listaVertices.indexOf(vertice)];
+                if (distancia < distanciaMinima) {
+                    distanciaMinima = distancia;
+                    centroMasCercano = vertice;
+                }
+            }
+        }
+
+        return centroMasCercano;
+    }
+
     @Override
     public String toString() {
-        return "Grafo [" + getVertices() + "\n";
+        return "Grafo [" + listaVertices + "\n";
     }
 }

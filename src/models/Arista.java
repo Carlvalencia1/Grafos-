@@ -15,28 +15,28 @@ public class Arista {
         return inicio;
     }
 
-    public void setInicio(Vertice origen) {
-        this.inicio = origen;
+    public void setInicio(Vertice inicio) {
+        this.inicio = inicio;
     }
 
     public Vertice getFin() {
         return fin;
     }
 
-    public void setFin(Vertice destino) {
-        this.fin = destino;
+    public void setFin(Vertice fin) {
+        this.fin = fin;
     }
 
     public int getPeso() {
         return peso;
     }
 
-    public void setPeso(int valor) {
-        this.peso = valor;
+    public void setPeso(int peso) {
+        this.peso = peso;
     }
 
     @Override
     public String toString() {
-        return "[" + inicio.getDato() + "-" + getPeso() + "-" + fin.getDato() + "]";
+        return "Arista [origen=" + inicio.getDato() + ", destino=" + fin.getDato() + ", peso=" + peso + "]";
     }
 }
