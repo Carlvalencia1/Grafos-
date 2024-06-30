@@ -1,4 +1,5 @@
 package models;
+
 import java.util.*;
 
 public class Grafo {
@@ -10,6 +11,10 @@ public class Grafo {
 
     public List<Vertice> getVertices() {
         return listaVertices;
+    }
+
+    public int getNumeroVertices() {
+        return listaVertices.size();
     }
 
     public void agregarAristas() {
@@ -37,7 +42,7 @@ public class Grafo {
                     }
                 } catch (Exception e) {
                     System.out.println("Error: Ingrese datos numéricos");
-                    entrada.next(); // Clear invalid input
+                    entrada.next();
                 }
             }
 
@@ -52,12 +57,12 @@ public class Grafo {
                     }
                 } catch (Exception e) {
                     System.out.println("Error: Ingrese datos numéricos");
-                    entrada.next(); // Clear invalid input
+                    entrada.next();
                 }
             }
 
             if (opcionOrigen == opcionDestino) {
-                System.out.println("Los vértices deben ser distintos");
+                System.out.println("No acepta lazos");
                 continue;
             } else {
                 origen = listaVertices.get(opcionOrigen - 1);
@@ -82,7 +87,7 @@ public class Grafo {
                     }
                 } catch (Exception e) {
                     System.out.println("Error: Ingrese datos numéricos");
-                    entrada.next(); // Clear invalid input
+                    entrada.next();
                 }
             } while (!pesoValido);
 
@@ -92,7 +97,6 @@ public class Grafo {
 
         } while (opcion == 1);
     }
-
 
     private boolean existeArista(Vertice origen, Vertice destino) {
         for (Arista arista : origen.getAristas()) {
@@ -133,6 +137,21 @@ public class Grafo {
             }
             System.out.println(recorrido);
         }
+    }
+
+    public Vertice centroMasCercanoConStock(int origen) {
+        CaminoMinimo caminoMinimo = new CaminoMinimo(this, origen);
+        caminoMinimo.Dijkstra(this, origen);
+
+        int minDistancia = Integer.MAX_VALUE;
+        Vertice centroCercano = null;
+        for (int i = 0; i < listaVertices.size(); i++) {
+            if (i != origen && listaVertices.get(i).getStock() > 0 && caminoMinimo.D[i] < minDistancia) {
+                minDistancia = caminoMinimo.D[i];
+                centroCercano = listaVertices.get(i);
+            }
+        }
+        return centroCercano;
     }
 
     @Override
